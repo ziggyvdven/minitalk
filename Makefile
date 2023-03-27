@@ -6,7 +6,7 @@
 #    By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/14 13:45:36 by zvandeven         #+#    #+#              #
-#    Updated: 2023/03/21 20:22:48 by zvan-de-         ###   ########.fr        #
+#    Updated: 2023/03/27 14:52:38 by zvan-de-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,8 +36,8 @@ BINDIR		= bin/
 
 # library and source files
 LIBFT		= libft/libft.a
-SERVER_S	= server.c 
-CLIENT_S  	= client.c
+SERVER_S	= server.c minitalk_utils.c 
+CLIENT_S  	= client.c minitalk_utils.c 
 
 #------------------------------------------------------------------------------#
 #                                 RULES                                        #

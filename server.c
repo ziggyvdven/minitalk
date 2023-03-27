@@ -6,71 +6,92 @@
 /*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 20:18:23 by zvan-de-          #+#    #+#             */
-/*   Updated: 2023/03/22 19:48:15 by zvan-de-         ###   ########.fr       */
+/*   Updated: 2023/03/27 19:03:41 by zvan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"includes/minitalk.h"
 
-int bit;
+char	g_bit;
 
-char	ft_btod(int num)
+void	handle_sigusr1(int signal)
 {
-	int		decimal_num;
-	int		base;
-	int		rem;
+	(void) signal;
+	g_bit = '0';
+}
 
-	base = 1;
-	decimal_num = 0;
-	while (num > 0)
+void	handle_sigusr2(int signal)
+{
+	(void) signal;
+	g_bit = '1';
+}
+
+int	ft_checkend(char *byte)
+{
+	int	i;
+
+	i = 0;
+	while (i < 7)
 	{
-		rem = num % 10;
-		decimal_num = decimal_num + rem * base;
-		num = num / 10;
-		base = base * 2;
+		if (byte[i] == '1')
+			return (0);
+		i++;
 	}
-	return (decimal_num);
+	return (1);
 }
 
-void handle_sigusr1()
+void	ft_printbyte(char *byte)
 {
-	bit = 0;
+	int			i;
+	static int 	end = 0;
+	static char pid[6];
+	static int	pos = 0;
+
+	byte[8] = '\0';
+	if (ft_checkend(byte))
+	{
+		if (end == 0)
+			printf("\n");
+		end = 1;
+		return ;
+	}
+	i = ft_atoi(byte);
+	i = ft_btod(i);
+	if (end == 1)
+	{
+		pid[pos++] = i;
+		if (ft_checkend(byte))
+			printf("%s\n", pid);
+	}
+	else
+	printf("%c", i);
+	i = 0;
 }
 
-void handle_sigusr2()
+int	main(void)
 {
-	bit = 1;
-}
+	struct sigaction	s1;
+	struct sigaction	s2;
+	char				byte[9];
+	int					i;
 
-int	main()
-{
-	struct sigaction	s1 = {0};
-	struct sigaction	s2 = {0};
-	pid_t				pid;
-	char				byte[8];
-	int 				i;
-
-	i =	0;
+	i = 0;
+	ft_memset(&s1, 0, sizeof(s1));
+	ft_memset(&s2, 0, sizeof(s2));
 	s1.sa_handler = &handle_sigusr1;
 	s2.sa_handler = &handle_sigusr2;
 	sigaction(SIGUSR1, &s1, NULL);
 	sigaction(SIGUSR2, &s2, NULL);
-	pid = getpid();
-	ft_printf("%d\n", pid);
+	ft_printf("SERVER PID: %d\n", getpid());
 	while (1)
 	{
 		pause ();
-		byte[i] = bit;
+		byte[i] = g_bit;
 		i++;
-		if(i == 7)
+		if (i == 8)
 		{
-			ft_printf("bit 7 = NULL\n");
-			byte[7] = '\0';
-			fflush(stdout);
-			ft_printf("%s\n", byte);
-			// ft_printf("byte = %d%d%d%d%d%d%d\n", byte[0],byte[1],byte[2],byte[3],byte[4],byte[5],byte[6]);
+			ft_printbyte(byte);
 			i = 0;
 		}
-		usleep(200);
 	}
 }
