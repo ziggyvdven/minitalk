@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
+/*   server_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 20:18:23 by zvan-de-          #+#    #+#             */
-/*   Updated: 2023/03/29 18:03:16 by zvan-de-         ###   ########.fr       */
+/*   Updated: 2023/03/29 12:33:27 by zvan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,16 @@
 
 char	g_bit;
 
-void	handle_sigusr(int signal, siginfo_t *info, void *null)
+void	handle_sigusr1(int signal)
 {
-	(void)null;
-	(void)info;
-	if (signal == SIGUSR1)
-		g_bit = '0';
-	else
-		g_bit = '1';
+	(void) signal;
+	g_bit = '0';
+}
+
+void	handle_sigusr2(int signal)
+{
+	(void) signal;
+	g_bit = '1';
 }
 
 int	ft_checkend(char *byte)
@@ -46,10 +48,10 @@ void	ft_printbyte(char *byte)
 	static int		pos = 0;
 
 	byte[8] = '\0';
-	if (ft_checkend(byte) && end == 0)
+	if (ft_checkend(byte))
 	{
 		printf("\n");
-		end = 1;
+		// end = 1;
 		return ;
 	}
 	i = ft_atoi(byte);
@@ -74,14 +76,17 @@ void	ft_printbyte(char *byte)
 int	main(void)
 {
 	struct sigaction	s1;
+	struct sigaction	s2;
 	char				byte[9];
 	int					i;
 
 	i = 0;
 	ft_memset(&s1, 0, sizeof(s1));
-	s1.sa_sigaction = handle_sigusr;
+	ft_memset(&s2, 0, sizeof(s2));
+	s1.sa_handler = &handle_sigusr1;
+	s2.sa_handler = &handle_sigusr2;
 	sigaction(SIGUSR1, &s1, NULL);
-	sigaction(SIGUSR2, &s1, NULL);
+	sigaction(SIGUSR2, &s2, NULL);
 	ft_printf("SERVER PID: %d\n", getpid());
 	while (1)
 	{

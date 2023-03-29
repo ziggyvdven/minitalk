@@ -6,7 +6,7 @@
 /*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 11:37:21 by zvan-de-          #+#    #+#             */
-/*   Updated: 2023/03/27 17:10:21 by zvan-de-         ###   ########.fr       */
+/*   Updated: 2023/03/29 17:37:00 by zvan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include	"../libft/libft.h"
 # include	<signal.h>
 # include	<sys/types.h>
+# include 	<unistd.h>
 
 char	*ft_itoa_client(int n);
 int		ft_dtob(int nbr);

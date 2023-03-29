@@ -6,7 +6,7 @@
 /*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 14:54:51 by zvan-de-          #+#    #+#             */
-/*   Updated: 2023/03/27 18:54:47 by zvan-de-         ###   ########.fr       */
+/*   Updated: 2023/03/29 18:28:09 by zvan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ void	signal_send(char *str, int pid)
 		if (str[i] == '0')
 		{
 			kill (pid, SIGUSR1);
-			usleep(50);
+			usleep(400);
 		}
 		if (str[i] == '1')
 		{
 			kill (pid, SIGUSR2);
-			usleep(50);
+			usleep(400);
 		}
 	i++;
 	}
@@ -37,7 +37,6 @@ void	ft_sendend(int pid)
 {
 	int		i;
 
-
 	i = 8;
 	while (i)
 	{
@@ -45,15 +44,21 @@ void	ft_sendend(int pid)
 		usleep(50);
 		i--;
 	}
-
 }
 
-void	ft_sendpid(int pid)
-{	
-	char	*pids;
-	char 	*binary_str;
-	int		binary;
+void	handle_sigusr1(int signal)
+{
+	(void) signal;
+	ft_printf("Message recieved\n");
+	exit (0);
+}
+
+void	ft_sendpit(int pid)
+{
 	int		i;
+	int		binary;
+	char	*binary_str;
+	char	*pids;
 
 	i = 0;
 	pids = ft_itoa(getpid());
@@ -61,7 +66,6 @@ void	ft_sendpid(int pid)
 	{
 		binary = ft_dtob(pids[i]);
 		binary_str = ft_itoa_client(binary);
-		ft_printf("%s\n", binary_str);
 		signal_send(binary_str, pid);
 		i++;
 	}
@@ -70,12 +74,16 @@ void	ft_sendpid(int pid)
 
 int	main(int argc, char **argv)
 {
-	int		pid;
-	int		binary;
-	int		i;
-	char	*binary_str;
+	struct sigaction	s1;
+	int					pid;
+	int					binary;
+	int					i;
+	char				*binary_str;
 
 	i = 0;
+	ft_memset(&s1, 0, sizeof(s1));
+	s1.sa_handler = &handle_sigusr1;
+	sigaction(SIGUSR1, &s1, NULL);
 	pid = ft_atoi(argv[1]);
 	if (argc == 3)
 	{
@@ -83,12 +91,12 @@ int	main(int argc, char **argv)
 		{
 			binary = ft_dtob(argv[2][i]);
 			binary_str = ft_itoa_client(binary);
-			ft_printf("%s\n", binary_str);
 			signal_send(binary_str, pid);
 			i++;
 		}
 		ft_sendend(pid);
-		ft_sendpid(pid);
+		ft_sendpit(pid);
+		pause ();
 	}
 	else
 	{
