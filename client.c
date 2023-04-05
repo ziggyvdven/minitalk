@@ -3,14 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zvandeven <zvandeven@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 14:54:51 by zvan-de-          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/04/05 12:54:22 by zvan-de-         ###   ########.fr       */
+=======
+/*   Updated: 2023/04/04 17:43:18 by zvandeven        ###   ########.fr       */
+>>>>>>> 3952d70a7fca5556d54d32285b9a655d9d624b03
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"includes/minitalk.h"
+
+int		g_rec = 0;
 
 void	signal_send(char *str, int pid)
 {
@@ -23,9 +29,15 @@ void	signal_send(char *str, int pid)
 			kill (pid, SIGUSR1);
 		if (str[i] == '1')
 			kill (pid, SIGUSR2);
+<<<<<<< HEAD
 		usleep(250);
+=======
+		usleep (400);
+		// pause ();
+>>>>>>> 3952d70a7fca5556d54d32285b9a655d9d624b03
 	i++;
 	}
+	return ;
 }
 
 void	ft_sendend(int pid)
@@ -41,14 +53,17 @@ void	ft_sendend(int pid)
 	}
 }
 
-void	handle_sigusr1(int signal)
+void	handle_sigusr(int signal, siginfo_t *si, void *data)
 {
-	(void) signal;
-	ft_printf("Message recieved\n");
-	exit (0);
+	(void) data;
+	(void) si;
+	if (signal == SIGUSR1)
+		g_rec = 1;
+	else
+		return ;
 }
 
-void	ft_sendpit(int pid)
+void	ft_sendpid(int pid)
 {
 	int		i;
 	int		binary;
@@ -77,8 +92,9 @@ int	main(int argc, char **argv)
 
 	i = -1;
 	ft_memset(&s1, 0, sizeof(s1));
-	s1.sa_handler = &handle_sigusr1;
+	s1.sa_sigaction = handle_sigusr;
 	sigaction(SIGUSR1, &s1, NULL);
+	sigaction(SIGUSR2, &s1, NULL);
 	pid = ft_atoi(argv[1]);
 	if (argc == 3)
 	{
@@ -89,8 +105,20 @@ int	main(int argc, char **argv)
 			signal_send(binary_str, pid);
 		}
 		ft_sendend(pid);
+<<<<<<< HEAD
 	}
 	else
 		ft_printf("Error try: client [the server PID] [The string to send]");
+=======
+		ft_sendpid(pid);
+		if (g_rec == 1)
+		{
+			printf("message recieved\n");
+			return (0);
+		}
+	}
+	else
+		printf("Error try: client [the server PID] [The string to send]");
+>>>>>>> 3952d70a7fca5556d54d32285b9a655d9d624b03
 	return (0);
 }
