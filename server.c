@@ -3,21 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zvandeven <zvandeven@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 20:18:23 by zvan-de-          #+#    #+#             */
-/*   Updated: 2023/03/29 18:03:16 by zvan-de-         ###   ########.fr       */
+/*   Updated: 2023/04/04 17:36:03 by zvandeven        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"includes/minitalk.h"
 
-char	g_bit;
+volatile char	g_bit;
+int		g_pid;
 
-void	handle_sigusr(int signal, siginfo_t *info, void *null)
+void	handle_sigusr(int signal, siginfo_t *si, void *data)
 {
-	(void)null;
-	(void)info;
+	(void)data;
+	g_pid = si->si_pid;
 	if (signal == SIGUSR1)
 		g_bit = '0';
 	else
@@ -38,7 +39,7 @@ int	ft_checkend(char *byte)
 	return (1);
 }
 
-void	ft_printbyte(char *byte)
+int	ft_printbyte(char *byte)
 {
 	int				i;
 	static int		end = 0;
@@ -50,7 +51,7 @@ void	ft_printbyte(char *byte)
 	{
 		printf("\n");
 		end = 1;
-		return ;
+		return (0);
 	}
 	i = ft_atoi(byte);
 	i = ft_btod(i);
@@ -63,36 +64,47 @@ void	ft_printbyte(char *byte)
 			ft_bzero(pid, 6);
 			pos = 0;
 			end = 0;
-			return ;
+			return (0);
 		}
 		pid[pos++] = i;
 	}
 	else
-		ft_printf("%c", i);
+		printf("%c", i);
+	return(0);
 }
 
 int	main(void)
 {
 	struct sigaction	s1;
-	char				byte[9];
+	char				*byte;
 	int					i;
+	sigset_t			set;
 
 	i = 0;
+	byte = NULL;
 	ft_memset(&s1, 0, sizeof(s1));
 	s1.sa_sigaction = handle_sigusr;
+	s1.sa_flags = SA_SIGINFO;
+	sigemptyset(&set);
+	sigaddset(&set, SIGUSR1);
+	sigaddset(&set, SIGUSR2);
+	s1.sa_mask = set;
 	sigaction(SIGUSR1, &s1, NULL);
 	sigaction(SIGUSR2, &s1, NULL);
-	ft_printf("SERVER PID: %d\n", getpid());
+	printf("SERVER PID: %d\n", getpid());
 	while (1)
 	{
 		pause ();
+		if (byte == NULL)
+			byte = (char *)malloc(sizeof(char) * 8 + 1);
 		byte[i] = g_bit;
-		i++;
-		if (i == 8)
+		if (++i == 8)
 		{
-			ft_printbyte(byte);
-			i = 0;
+			i = ft_printbyte(byte);
+			free(byte);
+			byte = NULL;
 		}
-	}
+		// kill (g_pid, SIGUSR2);	
+	} 
 	return (0);
 }

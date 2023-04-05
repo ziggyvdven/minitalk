@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zvandeven <zvandeven@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 14:54:51 by zvan-de-          #+#    #+#             */
-/*   Updated: 2023/03/29 18:28:09 by zvan-de-         ###   ########.fr       */
+/*   Updated: 2023/04/04 17:43:18 by zvandeven        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"includes/minitalk.h"
+
+int		g_rec = 0;
 
 void	signal_send(char *str, int pid)
 {
@@ -20,17 +22,14 @@ void	signal_send(char *str, int pid)
 	while (str[i])
 	{
 		if (str[i] == '0')
-		{
 			kill (pid, SIGUSR1);
-			usleep(400);
-		}
 		if (str[i] == '1')
-		{
 			kill (pid, SIGUSR2);
-			usleep(400);
-		}
+		usleep (400);
+		// pause ();
 	i++;
 	}
+	return ;
 }
 
 void	ft_sendend(int pid)
@@ -46,14 +45,17 @@ void	ft_sendend(int pid)
 	}
 }
 
-void	handle_sigusr1(int signal)
+void	handle_sigusr(int signal, siginfo_t *si, void *data)
 {
-	(void) signal;
-	ft_printf("Message recieved\n");
-	exit (0);
+	(void) data;
+	(void) si;
+	if (signal == SIGUSR1)
+		g_rec = 1;
+	else
+		return ;
 }
 
-void	ft_sendpit(int pid)
+void	ft_sendpid(int pid)
 {
 	int		i;
 	int		binary;
@@ -82,8 +84,9 @@ int	main(int argc, char **argv)
 
 	i = 0;
 	ft_memset(&s1, 0, sizeof(s1));
-	s1.sa_handler = &handle_sigusr1;
+	s1.sa_sigaction = handle_sigusr;
 	sigaction(SIGUSR1, &s1, NULL);
+	sigaction(SIGUSR2, &s1, NULL);
 	pid = ft_atoi(argv[1]);
 	if (argc == 3)
 	{
@@ -95,13 +98,14 @@ int	main(int argc, char **argv)
 			i++;
 		}
 		ft_sendend(pid);
-		ft_sendpit(pid);
-		pause ();
+		ft_sendpid(pid);
+		if (g_rec == 1)
+		{
+			printf("message recieved\n");
+			return (0);
+		}
 	}
 	else
-	{
-		ft_printf("Error: Incorrect number of parameters.\n");
-		ft_printf("try: client [the server PID] [The string to send]");
-	}
+		printf("Error try: client [the server PID] [The string to send]");
 	return (0);
 }
