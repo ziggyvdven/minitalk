@@ -6,7 +6,7 @@
 /*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 14:54:51 by zvan-de-          #+#    #+#             */
-/*   Updated: 2023/03/29 18:28:09 by zvan-de-         ###   ########.fr       */
+/*   Updated: 2023/04/05 12:54:22 by zvan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,10 @@ void	signal_send(char *str, int pid)
 	while (str[i])
 	{
 		if (str[i] == '0')
-		{
 			kill (pid, SIGUSR1);
-			usleep(400);
-		}
 		if (str[i] == '1')
-		{
 			kill (pid, SIGUSR2);
-			usleep(400);
-		}
+		usleep(250);
 	i++;
 	}
 }
@@ -80,28 +75,22 @@ int	main(int argc, char **argv)
 	int					i;
 	char				*binary_str;
 
-	i = 0;
+	i = -1;
 	ft_memset(&s1, 0, sizeof(s1));
 	s1.sa_handler = &handle_sigusr1;
 	sigaction(SIGUSR1, &s1, NULL);
 	pid = ft_atoi(argv[1]);
 	if (argc == 3)
 	{
-		while (argv[2][i])
+		while (argv[2][++i])
 		{
 			binary = ft_dtob(argv[2][i]);
 			binary_str = ft_itoa_client(binary);
 			signal_send(binary_str, pid);
-			i++;
 		}
 		ft_sendend(pid);
-		ft_sendpit(pid);
-		pause ();
 	}
 	else
-	{
-		ft_printf("Error: Incorrect number of parameters.\n");
-		ft_printf("try: client [the server PID] [The string to send]");
-	}
+		ft_printf("Error try: client [the server PID] [The string to send]");
 	return (0);
 }

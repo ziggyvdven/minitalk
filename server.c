@@ -6,7 +6,7 @@
 /*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 20:18:23 by zvan-de-          #+#    #+#             */
-/*   Updated: 2023/03/29 18:03:16 by zvan-de-         ###   ########.fr       */
+/*   Updated: 2023/04/05 13:01:18 by zvan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,34 +41,16 @@ int	ft_checkend(char *byte)
 void	ft_printbyte(char *byte)
 {
 	int				i;
-	static int		end = 0;
-	static char		pid[6];
-	static int		pos = 0;
 
 	byte[8] = '\0';
-	if (ft_checkend(byte) && end == 0)
+	if (ft_checkend(byte))
 	{
 		printf("\n");
-		end = 1;
 		return ;
 	}
 	i = ft_atoi(byte);
 	i = ft_btod(i);
-	if (end == 1)
-	{
-		if (ft_checkend(byte))
-		{
-			pid[pos] = '\0';
-			kill (ft_atoi(pid), SIGUSR1);
-			ft_bzero(pid, 6);
-			pos = 0;
-			end = 0;
-			return ;
-		}
-		pid[pos++] = i;
-	}
-	else
-		ft_printf("%c", i);
+	ft_printf("%c", i);
 }
 
 int	main(void)
@@ -87,12 +69,12 @@ int	main(void)
 	{
 		pause ();
 		byte[i] = g_bit;
-		i++;
 		if (i == 8)
 		{
 			ft_printbyte(byte);
 			i = 0;
 		}
+		i++;
 	}
 	return (0);
 }

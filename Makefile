@@ -6,7 +6,7 @@
 #    By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/14 13:45:36 by zvandeven         #+#    #+#              #
-#    Updated: 2023/03/29 11:59:55 by zvan-de-         ###   ########.fr        #
+#    Updated: 2023/04/05 11:57:04 by zvan-de-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,26 +18,28 @@ G	= \033[0;32m
 #------------------------------------------------------------------------------#
 
 # Program name
-NAME 		= minitalk
-SERVER 		= server
-CLIENT 		= client
+NAME 			= minitalk
+SERVER 			= server
+CLIENT 			= client
 
 # Compiler and flags
-CC			= gcc
-CFLAGS		= -Wall -Wextra -Werror -g 
+CC				= gcc
+CFLAGS			= -Wall -Wextra -Werror -g 
 
 # others
-RM			= rm -f
-MAKE		= make
+RM				= rm -f
+MAKE			= make
 
 # Objects are all .o files
-OBJS 		= $(addprefix $(BINDIR), $(SERVER_S:.c=.o))
-BINDIR		= bin/
+OBJS 			= $(addprefix $(BINDIR), $(SERVER_S:.c=.o))
+BINDIR			= bin/
 
 # library and source files
-LIBFT		= libft/libft.a
-SERVER_S	= server.c minitalk_utils.c 
-CLIENT_S  	= client.c minitalk_utils.c 
+LIBFT			= libft/libft.a
+SERVER_S		= server.c minitalk_utils.c 
+CLIENT_S  		= client.c minitalk_utils.c 
+CLIENT_BONUS	= client_bonus.c minitalk_utils.c
+SERVER_BONUS	= server_bonus.c minitalk_utils.c
 
 #------------------------------------------------------------------------------#
 #                                 RULES                                        #
@@ -47,7 +49,7 @@ all: $(SERVER) $(CLIENT)
 
 $(SERVER): $(BINDIR) $(OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) $(LIBFT) -o $@ $(SERVER_S)
-		@echo "$(G)\n -- SERVER MADE 🐙 --$(RT)"
+		@echo "$(G)\n -- $(SERVER) made 🐙 --$(RT)"
 
 $(BINDIR) :
 	mkdir $(BINDIR)
@@ -60,7 +62,10 @@ $(LIBFT):
 
 $(CLIENT): $(CLIENT_S)
 	$(CC) $(CFLAGS) $(LIBFT) -o $@ $(CLIENT_S)
-		@echo "$(G)\n -- CLIENT MADE 🐙 --$(RT)"
+		@echo "$(G)\n -- $(CLIENT) made 🐙 --$(RT)"
+	
+bonus: 
+	@$(MAKE) "CLIENT_S=$(CLIENT_BONUS)" "SERVER_S=$(SERVER_BONUS)" "SERVER = server_bonus" "CLIENT = client_bonus"
 	
 clean:
 	@$(RM) $(OBJS)
@@ -71,6 +76,8 @@ clean:
 fclean: clean
 	@$(RM) $(SERVER)
 	@$(RM) $(CLIENT) 
+	@$(RM) server_bonus
+	@$(RM) client_bonus
 	@$(MAKE) -C libft fclean
 
 re: fclean all
