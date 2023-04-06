@@ -6,13 +6,11 @@
 /*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 14:54:51 by zvan-de-          #+#    #+#             */
-/*   Updated: 2023/04/05 12:49:03 by zvan-de-         ###   ########.fr       */
+/*   Updated: 2023/04/05 20:27:55 by zvan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"includes/minitalk.h"
-
-int		g_rec = 0;
 
 void	signal_send(char *str, int pid)
 {
@@ -25,7 +23,7 @@ void	signal_send(char *str, int pid)
 			kill (pid, SIGUSR1);
 		if (str[i] == '1')
 			kill (pid, SIGUSR2);
-		usleep (50);
+		usleep (150);
 	i++;
 	}
 	return ;
@@ -49,7 +47,7 @@ void	handle_sigusr(int signal, siginfo_t *si, void *data)
 	(void) data;
 	(void) si;
 	if (signal == SIGUSR1)
-		ft_printf("message recieved");
+		ft_putstr_fd("📬✔️✔️", 1);
 	else
 		return ;
 }
@@ -70,6 +68,7 @@ void	ft_sendpid(int pid)
 		signal_send(binary_str, pid);
 		i++;
 	}
+	usleep(50);
 	ft_sendend(pid);
 }
 
@@ -98,6 +97,6 @@ int	main(int argc, char **argv)
 		ft_sendpid(pid);
 	}
 	else
-		printf("Error try: client [the server PID] [The string to send]");
+		ft_printf("Error try: client [the server PID] [The string to send]");
 	return (0);
 }

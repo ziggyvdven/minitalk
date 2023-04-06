@@ -6,7 +6,7 @@
 /*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 11:20:52 by zvandeven         #+#    #+#             */
-/*   Updated: 2023/03/22 15:02:12 by zvan-de-         ###   ########.fr       */
+/*   Updated: 2023/04/05 18:05:26 by zvan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 int		ft_printf(const char *s, ...);
 size_t	ft_strlen(const char *s);
 void	ft_putchar(char c);
-int		ft_putnbr(int n, int fd);
+int		ft_putnbr_pf(int n, int count);
 int		ft_putstr(char *str);
 int		ft_putunsing(unsigned int n, int count);
 int		ft_putnbr_base_pf(unsigned int nbr, int count, int b);

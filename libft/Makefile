@@ -6,7 +6,7 @@
 #    By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/14 13:45:36 by zvandeven         #+#    #+#              #
-#    Updated: 2023/03/22 14:48:10 by zvan-de-         ###   ########.fr        #
+#    Updated: 2023/04/05 18:05:52 by zvan-de-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ ft_lstlast.c ft_lstdelone.c ft_lstadd_back.c\
 ft_lstiter.c ft_lstmap.c ft_lstclear.c ft_putnbr_base.c\
 ft_printf/ft_printf.c\
 ft_printf/ft_printf_utils.c\
-ft_printf/ft_putnbr.c\
+ft_printf/ft_putnbr_pf.c\
 ft_printf/ft_putunsign.c\
 ft_printf/ft_putnbr_base_pf.c\
 ft_printf/ft_printadr.c\

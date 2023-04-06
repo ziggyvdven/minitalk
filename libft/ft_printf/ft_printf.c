@@ -6,7 +6,7 @@
 /*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 13:09:49 by zvandeven         #+#    #+#             */
-/*   Updated: 2023/03/22 14:48:59 by zvan-de-         ###   ########.fr       */
+/*   Updated: 2023/04/05 18:07:06 by zvan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	ft_prspecifier(char c, va_list *args)
 	else if (c == 'p')
 		count += ft_printadr(&*args);
 	else if (c == 'd' || c == 'i')
-		count += ft_putnbr(va_arg(*args, int), count);
+		count += ft_putnbr_pf(va_arg(*args, int), count);
 	else if (c == 'u')
 		count += ft_putunsing(va_arg(*args, unsigned int), count);
 	else if (c == 'x')

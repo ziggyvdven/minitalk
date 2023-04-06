@@ -6,7 +6,7 @@
 /*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 20:18:23 by zvan-de-          #+#    #+#             */
-/*   Updated: 2023/04/05 15:11:26 by zvan-de-         ###   ########.fr       */
+/*   Updated: 2023/04/05 20:44:34 by zvan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ void	ft_printbyte(char *byte)
 	byte[8] = '\0';
 	if (ft_checkend(byte))
 	{
-		printf("\n");
+		ft_putstr_fd("\n", 1);
+		ft_printf("SERVER PID: %d\n", getpid());
 		return ;
 	}
 	i = ft_atoi(byte);
@@ -68,13 +69,12 @@ int	main(void)
 	while (1)
 	{
 		pause ();
-		byte[i] = g_bit;
+		byte[i++] = g_bit;
 		if (i == 8)
 		{
 			ft_printbyte(byte);
 			i = 0;
 		}
-		i++;
 	}
 	return (0);
 }

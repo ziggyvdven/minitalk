@@ -6,7 +6,7 @@
 #    By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/14 13:45:36 by zvandeven         #+#    #+#              #
-#    Updated: 2023/04/05 11:57:04 by zvan-de-         ###   ########.fr        #
+#    Updated: 2023/04/05 20:14:12 by zvan-de-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,14 +24,16 @@ CLIENT 			= client
 
 # Compiler and flags
 CC				= gcc
-CFLAGS			= -Wall -Wextra -Werror -g 
+CFLAGS			= -Wall -Wextra -Werror
 
 # others
 RM				= rm -f
 MAKE			= make
 
 # Objects are all .o files
-OBJS 			= $(addprefix $(BINDIR), $(SERVER_S:.c=.o))
+OBJSCLIENT		= $(addprefix $(BINDIR), $(CLIENT_S:.c=.o))
+OBJSSERVER		= $(addprefix $(BINDIR), $(SERVER_S:.c=.o))
+
 BINDIR			= bin/
 
 # library and source files
@@ -47,10 +49,14 @@ SERVER_BONUS	= server_bonus.c minitalk_utils.c
 
 all: $(SERVER) $(CLIENT)
 
-$(SERVER): $(BINDIR) $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(LIBFT) -o $@ $(SERVER_S)
+$(SERVER): $(BINDIR) $(OBJSSERVER) $(LIBFT)
+	$(CC) $(CFLAGS) $(LIBFT) -o $@ $(OBJSSERVER)
 		@echo "$(G)\n -- $(SERVER) made 🐙 --$(RT)"
 
+$(CLIENT): $(OBJSCLIENT) 
+	$(CC) $(CFLAGS) $(LIBFT) -o $@ $(OBJSCLIENT)
+		@echo "$(G)\n -- $(CLIENT) made 🐙 --$(RT)"
+		
 $(BINDIR) :
 	mkdir $(BINDIR)
 	
@@ -60,10 +66,6 @@ $(BINDIR)%.o: %.c
 $(LIBFT):
 	@$(MAKE) -C libft
 
-$(CLIENT): $(CLIENT_S)
-	$(CC) $(CFLAGS) $(LIBFT) -o $@ $(CLIENT_S)
-		@echo "$(G)\n -- $(CLIENT) made 🐙 --$(RT)"
-	
 bonus: 
 	@$(MAKE) "CLIENT_S=$(CLIENT_BONUS)" "SERVER_S=$(SERVER_BONUS)" "SERVER = server_bonus" "CLIENT = client_bonus"
 	

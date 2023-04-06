@@ -6,7 +6,7 @@
 /*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 14:54:51 by zvan-de-          #+#    #+#             */
-/*   Updated: 2023/04/05 15:12:39 by zvan-de-         ###   ########.fr       */
+/*   Updated: 2023/04/05 20:41:58 by zvan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int	main(int argc, char **argv)
 			signal_send(binary_str, pid);
 		}
 		ft_sendend(pid);
+
 	}
 	else
 		ft_printf("Error try: client [the server PID] [The string to send]");

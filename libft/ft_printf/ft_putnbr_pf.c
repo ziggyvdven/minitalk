@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr.c                                        :+:      :+:    :+:   */
+/*   ft_putnbr_pf.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 22:21:05 by zvandeven         #+#    #+#             */
-/*   Updated: 2023/03/21 15:27:59 by zvan-de-         ###   ########.fr       */
+/*   Updated: 2023/04/05 18:09:10 by zvan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"includes/ft_printf.h"
 
-void	ft_checkzero(long int a)
+void	ft_checkzero_pf(long int a)
 {
 	if (a == 0)
 	{
@@ -42,7 +42,7 @@ int	ft_dcount(int n)
 	return (count - 1);
 }
 
-int	ft_putnbr(int n, int count)
+int	ft_putnbr_pf(int n, int count)
 {
 	char		str[11];
 	long int	tempn;
@@ -50,7 +50,7 @@ int	ft_putnbr(int n, int count)
 
 	i = 1;
 	tempn = n;
-	ft_checkzero(tempn);
+	ft_checkzero_pf(tempn);
 	if (tempn < 0)
 	{
 		write(1, "-", 1);
