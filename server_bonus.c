@@ -6,12 +6,11 @@
 /*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 20:18:23 by zvan-de-          #+#    #+#             */
-/*   Updated: 2023/04/05 20:40:26 by zvan-de-         ###   ########.fr       */
+/*   Updated: 2023/04/06 16:58:07 by zvan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"includes/minitalk.h"
-#include	<limits.h>
 
 volatile char	g_bit;
 
@@ -43,15 +42,10 @@ void	ft_printbyte(char *byte)
 {
 	int				i;
 	static int		end = 0;
-	static char		buff[100000000000] = {0};
-	static int		pos = 0;
 
 	if (ft_checkend(byte) && end == 0)
 	{
-		buff[pos] = '\0';
-		ft_putstr_fd(buff, 1);
 		ft_putchar_fd('\n', 1);
-		pos = 0;
 		end = 1;
 		return ;
 	}
@@ -60,7 +54,7 @@ void	ft_printbyte(char *byte)
 	if (end == 1)
 		end = ft_makepid(byte, i);
 	else
-		buff[pos++] = (char)i;
+		ft_printf("%c", i);
 }
 
 int	ft_makepid(char *byte, int i)
@@ -97,13 +91,13 @@ int	main(void)
 	ft_putstr_fd("SERVER PID: ", 1);
 	ft_putnbr_fd(getpid(), 1);
 	ft_putstr_fd("\n", 1);
+	byte[8] = '\0';
 	while (1)
 	{
 		pause ();
 		byte[i++] = g_bit;
 		if (i == 8)
 		{
-			byte[8] = '\0';
 			ft_printbyte(byte);
 			i = 0;
 		}
