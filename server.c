@@ -6,7 +6,7 @@
 /*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 20:18:23 by zvan-de-          #+#    #+#             */
-/*   Updated: 2023/04/05 20:44:34 by zvan-de-         ###   ########.fr       */
+/*   Updated: 2023/04/19 16:20:59 by zvan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,27 @@ int	ft_checkend(char *byte)
 void	ft_printbyte(char *byte)
 {
 	int				i;
+	static char		*str;
 
 	byte[8] = '\0';
 	if (ft_checkend(byte))
 	{
+		ft_printf("%s", str);
 		ft_putstr_fd("\n", 1);
 		ft_printf("SERVER PID: %d\n", getpid());
+		free(str);
+		str = NULL;
 		return ;
 	}
 	i = ft_atoi(byte);
 	i = ft_btod(i);
-	ft_printf("%c", i);
+	if (str == NULL)
+	{
+		str = (char *)ft_calloc(sizeof(char), 1 + 1);
+		if (!str)
+			return ;
+	}
+	str = ft_strjoin_char(str, i);
 }
 
 int	main(void)

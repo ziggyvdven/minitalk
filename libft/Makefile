@@ -6,64 +6,85 @@
 #    By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/14 13:45:36 by zvandeven         #+#    #+#              #
-#    Updated: 2023/04/05 18:05:52 by zvan-de-         ###   ########.fr        #
+#    Updated: 2023/04/19 14:56:49 by zvan-de-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 #------------------------------------------------------------------------------#
 #                                VARIABLES                                     #
 #------------------------------------------------------------------------------#
-NAME 		= libft.a
-CC			= gcc
-RM			= rm -f
-CFLAGS		= -g -Wall -Wextra -Werror
-BINDIR		= bin/
-OBJS 		= $(addprefix $(BINDIR), $(SRCS:.c=.o))
-SRCS		=  ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c \
-ft_isprint.c ft_strlen.c ft_memset.c ft_bzero.c \
-ft_memcpy.c ft_memmove.c ft_strlcpy.c ft_strlcat.c \
-ft_toupper.c ft_tolower.c ft_strchr.c ft_strrchr.c \
-ft_strncmp.c ft_memchr.c ft_memcmp.c ft_strnstr.c\
-ft_atoi.c ft_strdup.c ft_substr.c ft_calloc.c\
-ft_substr.c ft_strjoin.c ft_strtrim.c ft_itoa.c\
-ft_strmapi.c ft_striteri.c ft_putchar_fd.c ft_putstr_fd.c\
-ft_putendl_fd.c ft_putnbr_fd.c ft_split.c\
-ft_lstnew.c ft_lstadd_front.c ft_lstsize.c\
-ft_lstlast.c ft_lstdelone.c ft_lstadd_back.c\
-ft_lstiter.c ft_lstmap.c ft_lstclear.c ft_putnbr_base.c\
-ft_printf/ft_printf.c\
-ft_printf/ft_printf_utils.c\
-ft_printf/ft_putnbr_pf.c\
-ft_printf/ft_putunsign.c\
-ft_printf/ft_putnbr_base_pf.c\
-ft_printf/ft_printadr.c\
+# library name
+NAME 			= libft.a
 
-#colors
-G = \033[0;32m
-RT = \033[0m
+# Compiler and flags
+CC				= gcc
+CFLAGS			= -g -Wall -Wextra -Werror
+
+# others
+RM				= rm -f
+
+# Objects 
+OBJS_PATH		= objs/
+OBJS_DIRS       = $(addprefix $(OBJS_PATH), gnl/ string/ alpha_digit/ memory/ utils/ list/ printf/)
+OBJS			= $(addprefix $(OBJS_PATH), $(SRCS_FILES:.c=.o))
+
+# Sources
+SRCS_PATH		= srcs/
+SRCS			= $(addprefix $(SRCS_PATH), $(SRCS_FILES))
+
+# Includes
+INCLUDE_PATH	= includes/
+INCS			= -I $(INCLUDE_PATH)
+HEADER			= $(addprefix $(INCLUDES_PATH), $(HEADER_FILES))
+HEADER_FILES	= libft.h
+
+# source files
+SRCS_FILES		= alpha_digit/ft_isalpha.c alpha_digit/ft_isdigit.c alpha_digit/ft_isalnum.c alpha_digit/ft_isascii.c \
+alpha_digit/ft_isprint.c string/ft_strlen.c memory/ft_memset.c memory/ft_bzero.c \
+memory/ft_memcpy.c memory/ft_memmove.c string/ft_strlcpy.c string/ft_strlcat.c \
+alpha_digit/ft_toupper.c alpha_digit/ft_tolower.c string/ft_strchr.c string/ft_strrchr.c \
+string/ft_strncmp.c memory/ft_memchr.c memory/ft_memcmp.c string/ft_strnstr.c\
+utils/ft_atoi.c string/ft_strdup.c string/ft_substr.c utils/ft_calloc.c\
+string/ft_substr.c string/ft_strjoin.c string/ft_strtrim.c utils/ft_itoa.c\
+string/ft_strmapi.c string/ft_striteri.c utils/ft_putchar_fd.c utils/ft_putstr_fd.c\
+utils/ft_putendl_fd.c utils/ft_putnbr_fd.c string/ft_split.c string/ft_strisdigit.c\
+list/ft_lstnew.c list/ft_lstadd_front.c list/ft_lstsize.c string/ft_strjoin_char.c\
+list/ft_lstlast.c list/ft_lstdelone.c list/ft_lstadd_back.c utils/ft_atol.c\
+list/ft_lstiter.c list/ft_lstmap.c list/ft_lstclear.c utils/ft_putnbr_base.c\
+utils/ft_swap.c\
+printf/ft_printf.c\
+printf/ft_printf_utils.c\
+printf/ft_putnbr_pf.c\
+printf/ft_putunsign.c\
+printf/ft_putnbr_base_pf.c\
+printf/ft_printadr.c\
+gnl/get_next_line.c gnl/get_next_line_utils.c\
 
 #------------------------------------------------------------------------------#
 #                                 RULES                                        #
 #------------------------------------------------------------------------------#
 
-all: $(NAME)
+all: $(NAME) 
 
-$(NAME): $(BINDIR) $(OBJS)
-	ar rc $(NAME) $(OBJS)
+$(OBJS_PATH)%.o: $(SRCS_PATH)%.c 
+	@mkdir $(OBJS_PATH) 2> /dev/null || true
+	@mkdir $(OBJS_DIRS) 2> /dev/null || true
+	$(CC) $(FLAGS) -o $@ -c $< -I $(HEADER)
 
-$(BINDIR)%.o: %.c
-	$(CC) $(CFLAGS) -c -o $@ $<
+$(NAME): $(OBJS)
+	@ar rc $(NAME) $(OBJS)
+	ranlib $(NAME)
 
-$(BINDIR) :
-	mkdir $(BINDIR)
-	mkdir $(BINDIR)ft_printf
-
+main: $(NAME) main.c
+	$(CC) $(CFLAGS) -lft -L. -o $@ main.c
+	
 clean:
-	$(RM) $(OBJS)
-	$(RM) -r $(BINDIR) 
+	@rm -fv $(OBJS)
+	@rmdir $(OBJS_DIRS) 2> /dev/null || true
+	@rmdir $(OBJS_PATH) 2> /dev/null || true
 
 fclean: clean
-	$(RM) $(NAME)
+	@rm -fv $(NAME)
 
 re: fclean all
 

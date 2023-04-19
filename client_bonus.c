@@ -6,7 +6,7 @@
 /*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 14:54:51 by zvan-de-          #+#    #+#             */
-/*   Updated: 2023/04/06 16:23:20 by zvan-de-         ###   ########.fr       */
+/*   Updated: 2023/04/19 16:39:44 by zvan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,9 @@ void	ft_sendpid(int pid)
 		binary_str = ft_itoa_client(binary);
 		signal_send(binary_str, pid);
 		i++;
+		ft_free_mini(binary_str);
 	}
+	ft_free_mini(pids);
 	usleep(50);
 	ft_sendend(pid);
 }
@@ -89,11 +91,12 @@ int	main(int argc, char **argv)
 			client.binary = ft_dtob(argv[2][client.i]);
 			client.binary_str = ft_itoa_client(client.binary);
 			signal_send(client.binary_str, client.pid);
+			ft_free_mini(client.binary_str);
 		}
 		ft_sendend(client.pid);
 		ft_sendpid(client.pid);
 		if (g_end == 1)
-			ft_putstr_fd("📬✔️✔️", 1);
+			ft_putstr_fd("📬\033[0;32m✔️✔️\033[0m\n", 1);
 	}
 	else
 		ft_printf("Error try: client [the server PID] [The string to send]");

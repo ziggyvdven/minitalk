@@ -6,7 +6,7 @@
 /*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 12:40:37 by zvan-de-          #+#    #+#             */
-/*   Updated: 2023/04/05 15:13:13 by zvan-de-         ###   ########.fr       */
+/*   Updated: 2023/04/19 14:35:34 by zvan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,4 +95,14 @@ char	ft_btod(int num)
 		base = base * 2;
 	}
 	return (decimal_num);
+}
+
+char	*ft_free_mini(char *s)
+{
+	if (s)
+	{
+		free(s);
+		s = NULL;
+	}
+	return (s);
 }

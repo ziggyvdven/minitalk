@@ -6,7 +6,7 @@
 /*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 20:18:23 by zvan-de-          #+#    #+#             */
-/*   Updated: 2023/04/06 16:58:07 by zvan-de-         ###   ########.fr       */
+/*   Updated: 2023/04/19 16:37:43 by zvan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,14 @@ void	ft_printbyte(char *byte)
 {
 	int				i;
 	static int		end = 0;
+	static char		*str;
 
 	if (ft_checkend(byte) && end == 0)
 	{
+		ft_printf("%s", str);
 		ft_putchar_fd('\n', 1);
+		free(str);
+		str = NULL;
 		end = 1;
 		return ;
 	}
@@ -53,8 +57,13 @@ void	ft_printbyte(char *byte)
 	i = ft_btod(i);
 	if (end == 1)
 		end = ft_makepid(byte, i);
-	else
-		ft_printf("%c", i);
+	else if (str == NULL)
+	{
+		str = (char *)ft_calloc(sizeof(char), 1 + 1);
+		if (!str)
+			return ;
+	}
+	str = ft_strjoin_char(str, i);
 }
 
 int	ft_makepid(char *byte, int i)

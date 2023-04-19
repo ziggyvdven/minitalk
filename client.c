@@ -6,7 +6,7 @@
 /*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 14:54:51 by zvan-de-          #+#    #+#             */
-/*   Updated: 2023/04/06 15:37:24 by zvan-de-         ###   ########.fr       */
+/*   Updated: 2023/04/19 15:36:23 by zvan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	signal_send(char *str, int pid)
 			kill (pid, SIGUSR1);
 		if (str[i] == '1')
 			kill (pid, SIGUSR2);
-		usleep(250);
+		usleep(150);
 	i++;
 	}
 }
@@ -43,14 +43,12 @@ void	ft_sendend(int pid)
 
 int	main(int argc, char **argv)
 {
-	struct sigaction	s1;
 	int					pid;
 	int					binary;
 	int					i;
 	char				*binary_str;
 
 	i = -1;
-	ft_memset(&s1, 0, sizeof(s1));
 	pid = ft_atoi(argv[1]);
 	if (argc == 3)
 	{
@@ -59,6 +57,8 @@ int	main(int argc, char **argv)
 			binary = ft_dtob(argv[2][i]);
 			binary_str = ft_itoa_client(binary);
 			signal_send(binary_str, pid);
+			free(binary_str);
+			binary_str = NULL;
 		}
 		ft_sendend(pid);
 	}

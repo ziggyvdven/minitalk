@@ -6,7 +6,7 @@
 #    By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/14 13:45:36 by zvandeven         #+#    #+#              #
-#    Updated: 2023/04/05 20:14:12 by zvan-de-         ###   ########.fr        #
+#    Updated: 2023/04/19 14:05:41 by zvan-de-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ CLIENT 			= client
 
 # Compiler and flags
 CC				= gcc
-CFLAGS			= -Wall -Wextra -Werror
+CFLAGS			= -Wall -Wextra -Werror -g
 
 # others
 RM				= rm -f
@@ -50,7 +50,7 @@ SERVER_BONUS	= server_bonus.c minitalk_utils.c
 all: $(SERVER) $(CLIENT)
 
 $(SERVER): $(BINDIR) $(OBJSSERVER) $(LIBFT)
-	$(CC) $(CFLAGS) $(LIBFT) -o $@ $(OBJSSERVER)
+	$(CC) $(CFLAGS) -o $@ $(OBJSSERVER) $(LIBFT)
 		@echo "$(G)\n -- $(SERVER) made 🐙 --$(RT)"
 
 $(CLIENT): $(OBJSCLIENT) 
