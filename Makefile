@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+         #
+#    By: zvandeven <zvandeven@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/14 13:45:36 by zvandeven         #+#    #+#              #
-#    Updated: 2023/04/19 14:05:41 by zvan-de-         ###   ########.fr        #
+#    Updated: 2024/08/13 13:59:37 by zvandeven        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,8 +53,8 @@ $(SERVER): $(BINDIR) $(OBJSSERVER) $(LIBFT)
 	$(CC) $(CFLAGS) -o $@ $(OBJSSERVER) $(LIBFT)
 		@echo "$(G)\n -- $(SERVER) made 🐙 --$(RT)"
 
-$(CLIENT): $(OBJSCLIENT) 
-	$(CC) $(CFLAGS) $(LIBFT) -o $@ $(OBJSCLIENT)
+$(CLIENT): $(OBJSCLIENT) $(LIBFT) 
+	$(CC) $(CFLAGS)  -o $@ $(OBJSCLIENT) $(LIBFT)
 		@echo "$(G)\n -- $(CLIENT) made 🐙 --$(RT)"
 		
 $(BINDIR) :
